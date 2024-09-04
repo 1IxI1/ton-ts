@@ -228,6 +228,22 @@ export class TonClient {
     }
 
     /**
+     * Get network config
+     * @param seqno optional mc_block seqno. if not provided, latest'll be used
+     * @param id optional config param. if not provided, all config will be returned
+     * @returns network config or param in base64
+     */
+    async getConfig(seqno?: number, id?: number): Promise<string> {
+        if (!id) {
+            let res = await this.api.getConfigAll(seqno);
+            return res.config.bytes;
+        } else {
+            let res = await this.api.getConfigParam(id, seqno);
+            return res.config.bytes;
+        }
+    }
+
+    /**
      * Send message to a network
      * @param src source message
      */

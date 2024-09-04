@@ -114,6 +114,12 @@ const getShards = z.object({
     shards: z.array(blockIdExt)
 });
 
+const getConfig = z.object({
+    config: z.object({
+        bytes: z.string(),
+    }),
+});
+
 const blockShortTxt = z.object({
     '@type': z.literal('blocks.shortTxId'),
     mode: z.number(),
@@ -292,6 +298,14 @@ export class HttpApi {
         } else {
             return null;
         }
+    }
+
+    async getConfigParam(param: number, seqno?: number) {
+        return await this.doCall('getConfigParam', { param, seqno }, getConfig);
+    }
+
+    async getConfigAll(seqno?: number) {
+        return await this.doCall('getConfigAll', { seqno }, getConfig);
     }
 
     async callGetMethod(address: Address, method: string, stack: TupleItem[]) {
